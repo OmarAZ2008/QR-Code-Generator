@@ -9,6 +9,7 @@ class QRCode:
         self.version = self.get_version()
         self.size = ((self.version-1)*4)+21
         self.matrix = self.initialize_matrix()
+        self.data_codewords = None
 
     def initialize_matrix(self):
         matrix = []
@@ -32,11 +33,9 @@ class QRCode:
         data_string = encoding.add_character_count_bits(data_string, self.version, self.data_length)
 
         data_string = encoding.encode(self.data, data_string)
-        print(data_string)
+        data_string = encoding.reach_requirement(data_string, self.version)
 
-
-        
-        print(len(data_string))
+        self.data_codewords = encoding.get_data_codewords(data_string)
 
 
 

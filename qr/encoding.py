@@ -41,6 +41,14 @@ def reach_requirement(data_string, version):
                 index = 0
     return data_string
 
+def get_data_codewords(data_string):
+    codewords = []
+    while len(data_string) > 0:
+        codeword = data_string[0:8]
+        codeword = int(codeword, 2)
+        codewords.append(codeword)
+        data_string = data_string[8:]
+    return codewords
 
         
     
