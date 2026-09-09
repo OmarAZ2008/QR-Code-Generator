@@ -8,4 +8,3 @@ for exp in range(255):
     val *= 2
     if val > 255:
         val = val^285
-

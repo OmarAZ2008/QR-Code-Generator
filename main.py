@@ -1,16 +1,12 @@
 from qr.qrcode import QRCode
 
-qr = QRCode("Hello World1234")
+qr = QRCode("Hello World1234110851666ssc")
 
 qr.encode_data()
 
-def exp_to_int(exp):
-    val = 1
-    for _ in range(exp):
-        val *= 2
-        if val > 255:
-            val = val^285
-    return val
-print(exp_to_int(254))
-        
+qr.structure_data()
 
+print(qr.version)
+print(qr.data_codewords)
+print(qr.group1_data)
+print(qr.group2_data)
