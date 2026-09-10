@@ -7,14 +7,16 @@ def multiply_polynomials(p1, p2):
         for p2_index in range(len(p2)):
             result_index = p1_index + p2_index
             if p1[p1_index] == 0 or p2[p2_index] == 0:
-                coeff = 0
+                result_coeff = 0
             else:
-                coeff = (int_to_alpha[p1[p1_index]] + int_to_alpha[p2[p2_index]]) % 255
-                coeff = alpha_to_int[coeff]
-            result[result_index] ^= coeff
+                p1_alpha = int_to_alpha[p1[p1_index]]
+                p2_alpha = int_to_alpha[p2[p2_index]]
+                result_alpha = (p1_alpha + p2_alpha) % 255
+                result_coeff = alpha_to_int[result_alpha]
+            result[result_index] ^= result_coeff
     return result
 
-def generate_gp(num_EC):
+def generate_gp(num_EC): # generator polynomial
     gp = [1]
     alpha_exp = 0
     for _ in range(num_EC):
@@ -22,3 +24,4 @@ def generate_gp(num_EC):
         gp = multiply_polynomials(gp, factor)
         alpha_exp += 1
     return gp
+
