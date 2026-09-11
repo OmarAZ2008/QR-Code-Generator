@@ -13,6 +13,7 @@ qr.structure_data_EC()
 
 qr.generate_binary_string()
 
+qr.place_modules()
 #print(qr.version)
 #print(qr.data_codewords)
 #print(qr.group1_data)
@@ -21,4 +22,6 @@ qr.generate_binary_string()
 #print(qr.group2_EC)
 #print(qr.codewords)
 #print(qr.binary_string)
+print(qr.matrix)
+
 

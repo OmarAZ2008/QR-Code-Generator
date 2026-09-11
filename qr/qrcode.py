@@ -1,4 +1,5 @@
 from qr import encoding
+from qr import module_placement
 from qr.EC import get_EC_codewords
 from resources import EC_info
 from resources.remainder_bits import remainder_bits
@@ -12,6 +13,7 @@ class QRCode:
         self.version = self.get_version()
         self.size = ((self.version-1)*4)+21
         self.matrix = self.initialize_matrix()
+        self.reserved = self.initialize_reserved()
         self.data_codewords = []
         self.group1_data = []
         self.group2_data = []
@@ -26,6 +28,15 @@ class QRCode:
             row = []
             for _ in range(self.size):
                 row.append(None)
+            matrix.append(row)
+        return matrix
+
+    def initialize_reserved(self):
+        matrix = []
+        for _ in range(self.size):
+            row = []
+            for _ in range(self.size):
+                row.append(False)
             matrix.append(row)
         return matrix
                 
@@ -97,6 +108,11 @@ class QRCode:
             self.binary_string += format(codeword, "08b")
         for _ in range(remainder_bits[self.version]):
             self.binary_string += "0"
+
+    def place_modules(self):
+        module_placement.set_finder_patterns(self.matrix, self.reserved, self.version)
+
+    
 
 
 
