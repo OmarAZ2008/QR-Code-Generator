@@ -1,6 +1,7 @@
 from qr import encoding
 from qr.EC import get_EC_codewords
 from resources import EC_info
+from resources.remainder_bits import remainder_bits
 from resources.version_capacities import version_capacities
 
 class QRCode:
@@ -17,6 +18,7 @@ class QRCode:
         self.group1_EC = []
         self.group2_EC = []
         self.codewords = []
+        self.binary_string = ""
 
     def initialize_matrix(self):
         matrix = []
@@ -90,6 +92,11 @@ class QRCode:
         for codeword_index in range(len(combined_EC[0])):
             for block in range(len(combined_EC)):
                 self.codewords.append(combined_EC[block][codeword_index])
+    def generate_binary_string(self):
+        for codeword in self.codewords:
+            self.binary_string += format(codeword, "08b")
+        for _ in range(remainder_bits[self.version]):
+            self.binary_string += "0"
 
 
 
