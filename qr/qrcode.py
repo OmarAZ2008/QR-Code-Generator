@@ -1,4 +1,5 @@
 from qr import encoding
+from qr.EC import get_EC_codewords
 from resources import EC_info
 from resources.version_capacities import version_capacities
 
@@ -13,6 +14,9 @@ class QRCode:
         self.data_codewords = []
         self.group1_data = []
         self.group2_data = []
+        self.group1_EC = []
+        self.group2_EC = []
+        self.codewords = []
 
     def initialize_matrix(self):
         matrix = []
@@ -59,6 +63,36 @@ class QRCode:
                 block.append(self.data_codewords[index])
                 index += 1
             self.group2_data.append(block)
+
+    def generate_EC_codewords(self):
+        num_EC = EC_info.error_correction_block[self.version]
+        for block in self.group1_data:
+            EC_codewords = get_EC_codewords(block, num_EC)
+            self.group1_EC.append(EC_codewords)
+        for block in self.group2_data:
+            EC_codewords = get_EC_codewords(block, num_EC)
+            self.group2_EC.append(EC_codewords)
+
+    def structure_data_EC(self):
+        combined_data = self.group1_data + self.group2_data
+
+        max_codewords = len(combined_data[0])
+        for block in range(len(combined_data)):
+            if len(combined_data[block]) > max_codewords:
+                max_codewords = len(combined_data[block])
+        for codeword_index in range(max_codewords):
+            for block in range(len(combined_data)):
+                if len(combined_data[block]) > codeword_index:
+                    self.codewords.append(combined_data[block][codeword_index])
+
+        combined_EC = self.group1_EC + self.group2_EC
+
+        for codeword_index in range(len(combined_EC[0])):
+            for block in range(len(combined_EC)):
+                self.codewords.append(combined_EC[block][codeword_index])
+
+
+
 
 
 
